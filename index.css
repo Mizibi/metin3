@@ -1,0 +1,87 @@
+body {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background: black;
+    margin: 0;
+    padding: 0;
+    overscroll-behavior: none;
+}
+
+/* Loader */
+
+#hollowLoader {
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    width: 5em;
+    height: 5em;
+    -webkit-animation: loaderAnim 1.25s infinite ease-in-out;
+    animation: loaderAnim 1.25s infinite ease-in-out;
+    outline: 1px solid transparent;
+}
+
+#hollowLoader .largeBox {
+    height: 5em;
+    width: 5em;
+    background-color: #ECECEC;
+    outline: 1px solid transparent;
+    position: fixed;
+}
+
+#hollowLoader .smallBox {
+    height: 5em;
+    width: 5em;
+    background-color: #34495e;
+    position: fixed;
+    z-index: 1;
+    outline: 1px solid transparent;
+    -webkit-animation: smallBoxAnim 1.25s alternate infinite ease-in-out;
+    animation: smallBoxAnim 1.25s alternate infinite ease-in-out;
+}
+
+@-webkit-keyframes smallBoxAnim {
+    0% {
+        transform: scale(0.2);
+    }
+    100% {
+        transform: scale(0.75);
+    }
+}
+
+@keyframes smallBoxAnim {
+    0% {
+        transform: scale(0.2);
+    }
+    100% {
+        transform: scale(0.75);
+    }
+}
+
+@-webkit-keyframes loaderAnim {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(90deg);
+    }
+}
+
+@keyframes loaderAnim {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(90deg);
+    }
+}
+
+/* Loading text */
+#loadingText {
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    margin-top: 50px;
+    color: white;
+    font-size: 20px;
+}
