@@ -10,7 +10,7 @@ class Loop {
     start() {
         requestAnimationFrame( this.start.bind(this) )
         this.tick()
-        this.renderer.render(this.scene, this.camera)
+        this.renderer.render(this.scene, this.camera.camera)
     }
 
     stop() {
@@ -19,6 +19,8 @@ class Loop {
 
     tick() {
         const delta = this.clock.getDelta()
+
+        this.camera.Update()
 
         // console.log(
         //   `The last frame rendered in ${delta * 1000} milliseconds`,

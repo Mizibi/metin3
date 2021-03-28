@@ -21,6 +21,8 @@ function createLoading(renderer) {
     loading.onProgress = function (url, itemsLoaded, itemsTotal) {
         console.log('Loading file: ' + url + '.\nLoaded ' + itemsLoaded + ' of ' + itemsTotal + ' files.')
         loaderText.innerHTML = `${itemsLoaded} / ${itemsTotal} loaded`
+
+        // Create load percentage
     }
     loading.onError = function (url) {
         console.log('There was an error loading ' + url)

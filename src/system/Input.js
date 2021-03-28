@@ -25,7 +25,7 @@ class Input {
                 this.keys.left = true
                 break
             case 81: // q
-                this.keys.forward = true
+                this.keys.left = true
                 break
             case 83: // s
                 this.keys.backward = true
@@ -53,7 +53,7 @@ class Input {
                 this.keys.left = false
                 break
             case 81: // q
-                this.keys.forward = false
+                this.keys.left = false
                 break
             case 83: // s
                 this.keys.backward = false

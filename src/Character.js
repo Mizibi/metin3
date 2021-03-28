@@ -1,59 +1,62 @@
 import { Input } from './system/Input.js'
-
+import { StateMachine } from './StateMachine.js'
 class Character {
     constructor() {
-        this.model = undefined
-        // <string, action> name, action clip
-        this.animations = new Map()
-        this.mixer = undefined
+        this.model = null
+        this.mixer = null
 
         this.input = new Input()
+        // <string, action> name, action clip
+        this.animations = new Map()
 
-        this.settings = {
-            'modify idle weight': 1.0,
-            'modify walk weight': 0.0,
-            'modify run weight': 0.0,
-        }
+        this.acceleration = new THREE.Vector3(1, 0.25, 1.0)
+        this.velocity = new THREE.Vector3(0, 0, 0)
     }
 
     async init() {
         const loadedCharacter = await new THREE.GLTFLoader(window.LOADINGMANAGER)
             .loadAsync('../ressources/fixedMainCharacter.glb')
 
+
+        // Store loaded 3d object and animations into class
         this.model = loadedCharacter.scene
-
-        // Postion, scale and do stuff to model here
-        loadedCharacter.scene.scale.setScalar(0.5)
-
-        // Clip model animations here
         this.mixer = new THREE.AnimationMixer(this.model)
 
-        // Add model updater
-        this.model.tick = (delta) => {
-            this.handleMovements()
-            this.mixer.update(delta)
-        }
+        // Postion, scale and alter shadows to model here
+        this.model.traverse(node => { 
+            if (node instanceof THREE.Mesh) { 
+                node.castShadow = true
+            }
+        })
+
+        this.model.scale.setScalar(0.5)
+        // ...
 
         this.initAnimations(loadedCharacter.animations)
 
-        this.initDebug()
+        // Add model updater
+        this.model.tick = (delta) => {
+
+            this.stateMachine.Update(delta, this.input)
+
+            this.update(delta)
+            // Update animation mixer
+            this.mixer.update(delta)
+        }
     }
 
     initAnimations(animations) {
         const actions = ['Idle', 'Walk', 'Run']
 
         animations.forEach(animation => {
-            console.log(animation)
             if (actions.includes(animation.name)) {
                 const action = this.mixer.clipAction(animation)
+
                 this.animations.set(animation.name, action)
-                action.play()
-                action.setEffectiveWeight(0)
             }
         })
 
-        this.animations.get('Idle').setEffectiveWeight(1)
-        console.log(this.mixer)
+        this.stateMachine = new StateMachine(this.animations, this.model)
     }
 
     initDebug() {
@@ -69,30 +72,33 @@ class Character {
         })
     }
 
-    handleMovements() {
+    update(delta) {
+        const velocity = this.velocity;
+        const acceleration = this.acceleration.clone();
+
+        const _Q = new THREE.Quaternion();
+        const _A = new THREE.Vector3();
+        const _R = this.model.quaternion.clone();
+
         if (this.input.keys.forward) {
-            this.animations.get('Idle').setEffectiveWeight(0)
-            this.animations.get('Walk').setEffectiveWeight(1)
+            this.model.translateZ(acceleration.z * delta)
+        }
+        if (this.input.keys.backward) {
+            this.model.translateZ(- acceleration.z * delta)
+        }
 
-            this.model.position.z += 0.01
+        if (this.input.keys.left) {
+            _A.set(0, 1, 0);
+            _Q.setFromAxisAngle(_A, 4.0 * Math.PI * delta * acceleration.y);
+            _R.multiply(_Q);
         }
-        else if (this.input.keys.shift) {
-            this.animations.get('Idle').setEffectiveWeight(0)
-            this.animations.get('Run').setEffectiveWeight(1)
+        if (this.input.keys.right) {
+            _A.set(0, 1, 0);
+            _Q.setFromAxisAngle(_A, 4.0 * -Math.PI * delta * acceleration.y);
+            _R.multiply(_Q);
+        }
 
-            this.model.position.z += 0.02
-        }
-        else if (this.input.keys.backward) {
-            this.animations.get('Idle').setEffectiveWeight(0)
-            this.animations.get('Walk').setEffectiveWeight(1)
-            
-            this.model.position.z -= 0.01
-        }
-        else {
-            this.animations.get('Idle').setEffectiveWeight(1)
-            this.animations.get('Walk').setEffectiveWeight(0)
-            this.animations.get('Run').setEffectiveWeight(0)
-        }
+        this.model.quaternion.copy(_R);
     }
 }
 

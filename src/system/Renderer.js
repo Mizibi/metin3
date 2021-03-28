@@ -1,6 +1,8 @@
 function createRenderer() {
     const renderer = new THREE.WebGLRenderer({ antialias: true })
 
+    renderer.shadowMap.enabled = true
+
     renderer.physicallyCorrectLights = true
 
     renderer.toneMapping = THREE.ReinhardToneMapping
