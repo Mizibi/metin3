@@ -24,7 +24,7 @@ class ThirdPersonCamera {
     }
   
     calcOffset() {
-      const offset = new THREE.Vector3(0, 1, -5)
+      const offset = new THREE.Vector3(0, 1.5, -4)
     //   offset.applyQuaternion(this._params.target.model.quaternion)
       offset.add(this.params.target.model.position)
       return offset
