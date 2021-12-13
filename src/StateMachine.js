@@ -1,36 +1,25 @@
 class StateMachine {
-    constructor(animations, model) {
-        this.states = {}
-        this.model = model
-        this.animations = animations
-
-        this.currentState = null
-        this.prevState = null
-
-        // Declare all states
-        // this.addState('Idle', IdleState)
-        this.addState('Walk', WalkState)
-        this.addState('Sidle', SidleState)
-        this.addState('Attack', AttackState)
-
-        // Default state for character
-        this.setState('Sidle')
+    constructor(stateMachineDefinition) {
+        this.stateMachineDefinition = stateMachineDefinition
+        this.transition(stateMachineDefinition.initialState)
     }
 
-    addState(name, type) {
-        this.states[name] = type
+    transition(state) {
+        const oldState = this.stateMachineDefinition[this.currentState]
+        this.oldState = this.currentState
+        if (oldState && oldState.exit) {
+            oldState.exit.call(this)
+        }
+        this.currentState = state
+        if (this.stateMachineDefinition[state].enter) {
+            this.stateMachineDefinition[state].enter.call(this)
+        }
     }
 
-    setState(stateName) {
-        this.prevState = this.currentState
-
-        this.currentState = new this.states[stateName](this)
-        this.currentState.Enter(this.prevState)
-    }
-
-    Update(delta, input) {
-        if (this.currentState) {
-            this.currentState.Update(input)
+    update(delta) {
+        const currentState = this.stateMachineDefinition[this.currentState]
+        if (currentState.update) {
+            currentState.update.call(this, delta)
         }
     }
 }
@@ -51,27 +40,33 @@ class IdleState extends State {
     }
 
     get Name() {
-        return 'Idle'
+        return 'idle'
     }
 
     Enter(prevState) {
-        const idleAction = this._parent.animations.get('Idle')
+        const sidleAction = this._parent.animations.get('idle')
         if (prevState) {
             const prevAction = this._parent.animations.get(prevState.Name)
 
-            idleAction.time = 0.0
-            idleAction.enabled = true
-            idleAction.setEffectiveTimeScale(1.0)
-            idleAction.setEffectiveWeight(1.0)
-            idleAction.crossFadeFrom(prevAction, 0.3, true)
+            sidleAction.time = 0.0
+            sidleAction.enabled = true
+            sidleAction.setEffectiveTimeScale(1.0)
+            sidleAction.setEffectiveWeight(1.0)
+            sidleAction.crossFadeFrom(prevAction, 0.2, true)
         }
-        idleAction.play()
+        sidleAction.play()
     }
 
     Update(input) {
+        if (input.keys.space) {
+            return this._parent.setState('Jump')
+        }
         if (input.keys.forward || input.keys.backward) {
             this._parent.setState('Walk')
         }
+        // if (input.keys.space) {
+        //     this._parent.setState('Attack')
+        // }
     }
 }
 
@@ -81,11 +76,11 @@ class WalkState extends State {
     }
 
     get Name() {
-        return 'swalk'
+        return 'walking'
     }
 
     Enter(prevState) {
-        const walkAction = this._parent.animations.get('swalk')
+        const walkAction = this._parent.animations.get('walking')
         if (prevState) {
             const prevAction = this._parent.animations.get(prevState.Name)
 
@@ -99,47 +94,92 @@ class WalkState extends State {
     }
 
     Update(input) {
+        if (input.keys.space) {
+            return this._parent.setState('Jump')
+        }
+        
         // this._parent.model.
         if (!input.keys.forward && !input.keys.backward) {
-            this._parent.setState('Sidle')
+            this._parent.setState('Idle')
         }
 
-        if (input.keys.space) {
-            this._parent.setState('Attack')
+        // if (input.keys.space) {
+        //     this._parent.setState('Attack')
+        // }
+
+        if (input.keys.shift) {
+            this._parent.setState('Run')
         }
     }
 }
 
-class SidleState extends State {
+class RunState extends State {
     constructor(parent) {
         super(parent)
     }
 
     get Name() {
-        return 'sidle'
+        return 'running'
     }
 
     Enter(prevState) {
-        const sidleAction = this._parent.animations.get('sidle')
+        const runAction = this._parent.animations.get('running')
         if (prevState) {
             const prevAction = this._parent.animations.get(prevState.Name)
 
-            sidleAction.time = 0.0
-            sidleAction.enabled = true
-            sidleAction.setEffectiveTimeScale(1.0)
-            sidleAction.setEffectiveWeight(1.0)
-            sidleAction.crossFadeFrom(prevAction, 0.3, true)
+            runAction.time = 0.0
+            runAction.enabled = true
+            runAction.setEffectiveTimeScale(1.0)
+            runAction.setEffectiveWeight(1.0)
+            runAction.crossFadeFrom(prevAction, 0.2, true)
         }
-        sidleAction.play()
+        runAction.play()
     }
 
     Update(input) {
-        if (input.keys.forward || input.keys.backward) {
+        if (input.keys.space) {
+            return this._parent.setState('Jump')
+        }
+
+        // this._parent.model.
+        if (!input.keys.shift) {
             this._parent.setState('Walk')
         }
-        if (input.keys.space) {
-            this._parent.setState('Attack')
+    }
+}
+
+class JumpState extends State {
+    constructor(parent) {
+        super(parent)
+    }
+
+    get Name() {
+        return 'jump'
+    }
+
+    Enter(prevState) {
+        const jumpAction = this._parent.animations.get('jump')
+        if (prevState) {
+            const prevAction = this._parent.animations.get(prevState.Name)
+
+            jumpAction.time = 0.4
+            jumpAction.enabled = true
+            jumpAction.setEffectiveTimeScale(1.0)
+            jumpAction.setEffectiveWeight(1.0)
+            jumpAction.crossFadeFrom(prevAction, 0.1, true)
         }
+        jumpAction.play()
+    }
+
+    Update(input, delta) {
+        const currentAnim = this._parent.animations.get('jump')
+        if (currentAnim.time >= currentAnim._clip.duration - 0.8) {
+                this._parent.setState('Idle')
+        }
+        // this._parent.model.
+        // if (!input.keys.shift) {
+        //     this._parent.setState('Walk')
+        // }
     }
 }
 
@@ -156,27 +196,27 @@ class AttackState extends State {
     }
 
     Enter(prevState) {
-        const sidleAction = this._parent.animations.get('Slash1')
-
+        const slashAction = this._parent.animations.get('Slash1')
+ 
         if (prevState) {
             const prevAction = this._parent.animations.get(prevState.Name)
 
-            sidleAction.time = 0.0
-            sidleAction.enabled = true
-            sidleAction.setLoop(THREE.LoopOnce, 1)
-            sidleAction.clampWhenFinished = true
-            sidleAction.setEffectiveTimeScale(1.0)
-            sidleAction.setEffectiveWeight(1.0)
-            sidleAction.crossFadeFrom(prevAction, 0.3, true)
+            slashAction.time = 0.8
+            slashAction.enabled = true
+            slashAction.setLoop(THREE.LoopOnce, 1)
+            slashAction.clampWhenFinished = true
+            slashAction.setEffectiveTimeScale(1.0)
+            slashAction.setEffectiveWeight(1.0)
+            slashAction.crossFadeFrom(prevAction, 0.2, true)
         }
-        sidleAction.play()
+        slashAction.play()
     }
 
     Update(input) {
         const currentAnim = this._parent.animations.get('Slash1')
         // 0.5 is to adjust attack end too long
         if (currentAnim.time >= currentAnim._clip.duration - 0.5) {
-            this._parent.setState('Sidle')
+            this._parent.setState('Idle')
         }
     }
 }

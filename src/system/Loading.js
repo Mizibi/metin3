@@ -1,16 +1,16 @@
-const loader = document.getElementById("hollowLoader")
+const loader = document.getElementById("loader")
 const loaderText = document.getElementById("loadingText")
 
 function createLoading(renderer) {
     const loading = new THREE.LoadingManager()
 
     loading.onStart = function (url, itemsLoaded, itemsTotal) {
-        console.log('Started loading file: ' + url + '.\nLoaded ' + itemsLoaded + ' of ' + itemsTotal + ' files.')
-        loaderText.innerHTML = 'Loading'
+        // console.log('Started loading file: ' + url + '.\nLoaded ' + itemsLoaded + ' of ' + itemsTotal + ' files.')
+        // loaderText.innerHTML = 'Loading'
     }
     loading.onLoad = function () {
-        console.log('Loading complete!')
-        
+        loaderText.innerHTML = `Starting...`
+
         // hide loader
         loader.style.visibility = 'hidden'
         loaderText.style.visibility = 'hidden'
@@ -19,7 +19,7 @@ function createLoading(renderer) {
         renderer.domElement.style.visibility = 'visible'
     }
     loading.onProgress = function (url, itemsLoaded, itemsTotal) {
-        console.log('Loading file: ' + url + '.\nLoaded ' + itemsLoaded + ' of ' + itemsTotal + ' files.')
+        // console.log('Loading file: ' + url + '.\nLoaded ' + itemsLoaded + ' of ' + itemsTotal + ' files.')
         loaderText.innerHTML = `${itemsLoaded} / ${itemsTotal} loaded`
 
         // Create load percentage

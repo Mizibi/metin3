@@ -7,6 +7,7 @@ class Input {
             right: false,
             space: false,
             shift: false,
+            wheel: 0,
         }
 
         document.addEventListener('keydown', this.keyDown.bind(this), false)

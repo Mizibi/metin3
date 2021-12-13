@@ -20,20 +20,11 @@ class Loop {
     tick() {
         const delta = this.clock.getDelta()
 
-        this.camera.Update()
-
-        // console.log(
-        //   `The last frame rendered in ${delta * 1000} milliseconds`,
-        // )
+        this.camera.update(delta)
 
         this.updatables.forEach(updatable => {
-            updatable.tick(delta)
+            updatable.update(delta)
         })
-
-        // May be faster ? To benchmark
-        // for (const object of this.updatables) {
-        //     object.tick(delta)
-        // }
     }
 }
 

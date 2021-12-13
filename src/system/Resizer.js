@@ -8,7 +8,6 @@ class Resizer {
         })
     }
 
-
     setSize(camera, renderer) {
         camera.aspect = innerWidth / innerHeight;
         camera.updateProjectionMatrix();

@@ -1,9 +1,11 @@
-function createScene() {
+// Scene specifics should be passed as arguments
+function createScene(sceneColor) {
     const scene = new THREE.Scene()
 
-    scene.background = new THREE.Color('white')
+    scene.background = new THREE.Color(sceneColor || 'white')
 
-    scene.add(new THREE.AxesHelper(50))
+    // Temp fog, to determine with gui
+    scene.fog = new THREE.FogExp2(0x89b2eb, 0.002);
 
     return scene
 }
