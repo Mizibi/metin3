@@ -15,6 +15,10 @@ class Input {
     }
 
     keyDown(event) {
+        // Avoid input when chat is active
+        const chatInput = document.getElementById("chat-input")
+        if (chatInput === document.activeElement) return
+
         switch (event.keyCode) {
             case 87: // w
                 this.keys.forward = true

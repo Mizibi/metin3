@@ -1,0 +1,22 @@
+#menu {
+  visibility: hidden;
+  /* background-color: white; */
+  box-shadow: 0px 0px 16px 0px #4444;
+  border-radius: 8%;
+  position: fixed;
+  right: 10px;
+  bottom: 10px;
+  display: flex;
+  justify-content: space-around;
+}
+
+.menu-icon {
+  height: 42px;
+  width: 42px;
+  padding: 5px;
+}
+
+.icon:hover {
+    cursor: pointer;
+    opacity: 0.5;
+}

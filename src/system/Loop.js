@@ -25,6 +25,10 @@ class Loop {
         this.updatables.forEach(updatable => {
             updatable.update(delta)
         })
+
+        if (window.DEBUG) {
+            window.STATS.update()
+        }
     }
 }
 

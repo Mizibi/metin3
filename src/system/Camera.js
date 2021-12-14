@@ -92,8 +92,17 @@ class ThirdPersonCamera {
 
       zoom = Math.min(Math.max(zoom, control_near), control_far); // clamp
 
-      this.camera.zoom = zoom
-      this.camera.updateProjectionMatrix()
+      var chatRect = document.getElementById('chat').getBoundingClientRect();
+      const mouseX = event.x
+      const mouseY = event.y
+
+      if (mouseX >= chatRect.left && mouseX <= chatRect.right &&
+        mouseY >= chatRect.top && mouseY <= chatRect.bottom) {
+        // Mouse is inside element and it should only scroll chat.
+      } else {
+        this.camera.zoom = zoom
+        this.camera.updateProjectionMatrix()
+      }
     }
 }
   

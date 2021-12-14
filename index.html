@@ -1,34 +1,102 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Metin 3</title>
 
-<head>
-	<meta charset="UTF-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
-	<title>Metin 3</title>
-	<link rel="stylesheet" href="index.css">
-</head>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto&display=swap"
+      rel="stylesheet"
+    />
 
-<body>
-	<section id="loader" class="loader">
-		<div class="circle"></div>
-		<div class="circle"></div>
-		<div class="circle"></div>
-		<div id="loadingText"></div>
-	</section>
-	<i id="heart" class="fa fa-heart " ></i>
-	<div id="bar">
-		<div id="health">
-		</div><div id="lost">
-		</div><div id="heal"></div>
-	</div>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r126/three.js"></script>
-	<script src="https://threejs.org/examples/js/controls/OrbitControls.js"></script>
-	<script src="https://unpkg.com/three@0.126.0/examples/js/loaders/GLTFLoader.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/three@0.117.1/examples/js/loaders/FBXLoader.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.7.7/dat.gui.min.js"></script>
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-	<script src="./src/main.js" type="module"></script>
-</body>
+    <link rel="stylesheet" href="index.css" />
+    <link rel="stylesheet" href="stats.css" />
+    <link rel="stylesheet" href="chat.css" />
+    <link rel="stylesheet" href="menu.css" />
+  </head>
 
+  <body>
+    <section id="loader" class="loader">
+      <div class="circle"></div>
+      <div class="circle"></div>
+      <div class="circle"></div>
+      <div id="loadingText"></div>
+    </section>
+
+    <div id="stats">
+      <div class="stats-bar">
+        <img class="stats-icon" src="./images/health.svg" alt="Inventory" />
+        <div id="bar">
+          <div id="health"></div>
+          <div id="lost"></div>
+          <div id="heal"></div>
+        </div>
+      </div>
+      <div class="stats-bar">
+        <img class="stats-icon" src="./images/experience.svg" alt="Inventory" />
+        <div id="bar">
+          <!-- <div id="health"></div> -->
+          <div id="lost"></div>
+          <div id="heal"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chat -->
+    <div id="chat">
+      <div id="chat-content">
+        <div class="chat-content-text-wrap">
+          <span class="chat-content-text">
+            <span class="chat-content-user">Benzebut</span>
+            GG WP</span
+          >
+        </div>
+        <div class="chat-content-text-wrap">
+          <span class="chat-content-text">
+            <span class="chat-content-user">Mizibi</span>
+            Text example</span
+          >
+        </div>
+
+        <div class="chat-content-text-wrap">
+          <span class="chat-content-text">
+            <span class="chat-content-user">Sucker</span>
+            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Beatae
+            perferendis id sapiente odio expedita quasi nostrum mollitia magnam
+            nesciunt. Ducimus mollitia, sint autem velit unde quisquam!
+            Voluptas, enim. Dicta, earum.
+          </span>
+        </div>
+      </div>
+      <div id="chat-input-wrap">
+        <input id="chat-input" type="text" />
+        <i id="chat-input-icon" class="fa fa-arrow-right"></i>
+      </div>
+    </div>
+
+    <!-- Menu -->
+    <div id="menu">
+      <img class="menu-icon" src="./images/inventory.svg" alt="Inventory" />
+      <img class="menu-icon" src="./images/settings.svg" alt="Settings" />
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r126/three.js"></script>
+    <script src="https://threejs.org/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://unpkg.com/three@0.126.0/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.117.1/examples/js/loaders/FBXLoader.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.7.7/dat.gui.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stats.js/r16/Stats.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+      integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <script src="./src/main.js" type="module"></script>
+  </body>
 </html>

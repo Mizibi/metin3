@@ -1,6 +1,10 @@
 const loader = document.getElementById("loader")
 const loaderText = document.getElementById("loadingText")
 
+const stats = document.getElementById("stats")
+const menu = document.getElementById("menu")
+const chat = document.getElementById("chat")
+
 function createLoading(renderer) {
     const loading = new THREE.LoadingManager()
 
@@ -17,6 +21,11 @@ function createLoading(renderer) {
 
         // show 3d render
         renderer.domElement.style.visibility = 'visible'
+        // show HUD
+        stats.style.visibility = 'visible'
+        menu.style.visibility = 'visible'
+        chat.style.visibility = 'visible'
+        
     }
     loading.onProgress = function (url, itemsLoaded, itemsTotal) {
         // console.log('Loading file: ' + url + '.\nLoaded ' + itemsLoaded + ' of ' + itemsTotal + ' files.')

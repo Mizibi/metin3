@@ -1,0 +1,96 @@
+#chat {
+  visibility: hidden;
+  background-color: transparent;
+  width: 300px;
+  height: 250px;
+  box-shadow: 0px 0px 16px 0px #4444;
+  position: fixed;
+  left: 10px;
+  bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  padding: 5px;
+}
+
+#chat-content {
+  display: flex;
+  flex: 1;
+  overflow-y: scroll;
+  flex-direction: column-reverse;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+/* Temp macos fix */
+::-webkit-scrollbar {
+  -webkit-appearance: none;
+  width: 7px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 4px;
+  background-color: rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 1px rgba(255, 255, 255, 0.5);
+}
+
+.chat-content-text-wrap {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+  padding: 5px;
+  border: solid;
+  border-left: none;
+  border-right: none;
+  border-top: none;
+  /* border-bottom-width: 1px; */
+  border-bottom: none;
+}
+
+.chat-content-user {
+    font-weight: bold;
+    font-size: 18px;
+    color: black;
+}
+
+.chat-content-user:after {
+    content: "\00a0:";
+}
+
+.chat-content-text {
+  font-size: 16px;
+}
+
+#chat-input-wrap {
+  opacity: 1;
+  display: flex;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  padding: 5px;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  border: solid;
+  border-width: 1px;
+  border-color: black;
+}
+
+#chat-input-wrap:hover {
+  opacity: 0.8;
+}
+
+#chat-input-wrap:active {
+  opacity: 1 !important;
+}
+
+#chat-input {
+  background-color: transparent;
+  border: none;
+  width: 100%;
+}
+#chat-input:focus-visible {
+  outline: none;
+}
+
+#chat-input-icon {
+  position: absolute;
+  right: 5%;
+}

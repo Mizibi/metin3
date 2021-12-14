@@ -7,6 +7,11 @@ window.SETTINGS = {
 
 window.DEBUG = window.location.search.includes("debug");
 if (window.DEBUG) {
+  const stats = new Stats()
+  window.STATS = stats
+  window.STATS.domElement.style.position = 'absolute'
+  document.body.appendChild(window.STATS.domElement)
+
   window.GUI = new dat.GUI();
   const settingsFolder = window.GUI.addFolder('Settings')
   settingsFolder.add(window.SETTINGS, 'useComposer')
@@ -19,6 +24,7 @@ async function main() {
   sceneManager.renderer.domElement.style.visibility = "hidden";
 
   window.LOADINGMANAGER = createLoading(sceneManager.renderer);
+
 
   // Should not be init, but async needed for loading
   await sceneManager.init();
