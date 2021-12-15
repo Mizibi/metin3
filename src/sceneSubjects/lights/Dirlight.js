@@ -1,5 +1,6 @@
-const LIGHT_X = 1
-const LIGHT_Y = 1
+const LIGHT_X = 5
+const LIGHT_Y = 5
+const LIGHT_Z = -5
 const LIGHT_INTENSITY = 1
 
 class Dirlight {
@@ -7,8 +8,9 @@ class Dirlight {
         const dirLight = new THREE.DirectionalLight(0xFFFFFF, LIGHT_INTENSITY)
 
         dirLight.castShadow = true
-        dirLight.position.y = LIGHT_X
-        dirLight.position.x = LIGHT_Y
+        dirLight.position.x = LIGHT_X
+        dirLight.position.y = LIGHT_Y
+        dirLight.position.z = LIGHT_Z
 
         scene.add(dirLight)
 
