@@ -4,6 +4,8 @@ import { Dirlight } from './sceneSubjects/lights/Dirlight.js';
 import { Floor } from './sceneSubjects/Floor.js'
 import { Character } from './sceneSubjects/Character.js'
 import { Enemy } from './sceneSubjects/Enemy.js';
+import { Tree } from './sceneSubjects/Tree.js'
+import { Dragon } from './sceneSubjects/Dragon.js'
 
 function createSceneSubjects(scene) {
     const sceneSubjects = [
@@ -12,7 +14,11 @@ function createSceneSubjects(scene) {
         // new Spotlight(scene),
         new Dirlight(scene),
         new Floor(scene),
-        new Enemy(scene)
+        new Enemy(scene),
+        new Tree(scene, new THREE.Vector3(3, 0, 2)),
+        new Tree(scene, new THREE.Vector3(-4, 0, 3)),
+        new Tree(scene, new THREE.Vector3(-2, 0, 4)),
+        // new Dragon(scene),
     ];
 
     return sceneSubjects
