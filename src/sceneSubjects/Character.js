@@ -48,6 +48,7 @@ class Character {
         // This would maybe benefit object.scene.children[0]
         this.model = object.scene
 
+        this.model.name = 'player'
         this.model.traverse((node) => {
             // Postion, scale and alter shadows to model
             if (node instanceof THREE.Mesh) {
@@ -203,99 +204,6 @@ class Character {
                 exit: () => {},
             },
         })
-    }
-
-    initDebug() {
-        // let anim = window.GUI.addFolder('Animations')
-        // anim.add(this.settings, 'modify idle weight', 0.0, 1.0, 0.01).listen().onChange((weight) => {
-        //     setWeight(this.animations.get('Idle'), weight)
-        // })
-        // anim.add(this.settings, 'modify walk weight', 0.0, 1.0, 0.01).listen().onChange((weight) => {
-        //     setWeight(this.animations.get('Walk'), weight)
-        // })
-        // anim.add(this.settings, 'modify run weight', 0.0, 1.0, 0.01).listen().onChange((weight) => {
-        //     setWeight(this.animations.get('Run'), weight)
-        // })
-
-        const folder1 = window.GUI.addFolder('Visibility')
-        const folder2 = window.GUI.addFolder('Activation/Deactivation')
-        const folder3 = window.GUI.addFolder('Pausing/Stepping')
-        const folder4 = window.GUI.addFolder('Crossfading')
-        const folder5 = window.GUI.addFolder('Blend Weights')
-        const folder6 = window.GUI.addFolder('General Speed')
-        let settings = {
-            'show model': true,
-            'show skeleton': false,
-            // 'deactivate all': deactivateAllActions,
-            // 'activate all': activateAllActions,
-            // 'pause/continue': pauseContinue,
-            // 'make single step': toSingleStepMode,
-            'modify step size': 0.05,
-            'from walk to idle': function () {
-                prepareCrossFade(walkAction, idleAction, 1.0)
-            },
-            'from idle to walk': function () {
-                prepareCrossFade(idleAction, walkAction, 0.5)
-            },
-            'from walk to run': function () {
-                prepareCrossFade(walkAction, runAction, 2.5)
-            },
-            'from run to walk': function () {
-                prepareCrossFade(runAction, walkAction, 5.0)
-            },
-            'use default duration': true,
-            'set custom duration': 3.5,
-            'modify idle weight': 0.0,
-            'modify walk weight': 1.0,
-            'modify run weight': 0.0,
-            'modify time scale': 1.0,
-        }
-
-        // folder1.add( settings, 'show model' ).onChange( showModel );
-        // folder1.add( settings, 'show skeleton' ).onChange( showSkeleton );
-        // folder2.add( settings, 'deactivate all' );
-        // folder2.add( settings, 'activate all' );
-        // folder3.add( settings, 'pause/continue' );
-        // folder3.add( settings, 'make single step' );
-        folder3.add(settings, 'modify step size', 0.01, 0.1, 0.001)
-        const crossFadeControls = []
-        function modifyTimeScale(speed) {
-            this.mixer.timeScale = speed
-        }
-        crossFadeControls.push(folder4.add(settings, 'from walk to idle'))
-        crossFadeControls.push(folder4.add(settings, 'from idle to walk'))
-        crossFadeControls.push(folder4.add(settings, 'from walk to run'))
-        crossFadeControls.push(folder4.add(settings, 'from run to walk'))
-        folder4.add(settings, 'use default duration')
-        folder4.add(settings, 'set custom duration', 0, 10, 0.01)
-        folder5
-            .add(settings, 'modify idle weight', 0.0, 1.0, 0.01)
-            .listen()
-            .onChange(function (weight) {
-                setWeight(idleAction, weight)
-            })
-        folder5
-            .add(settings, 'modify walk weight', 0.0, 1.0, 0.01)
-            .listen()
-            .onChange(function (weight) {
-                setWeight(walkAction, weight)
-            })
-        folder5
-            .add(settings, 'modify run weight', 0.0, 1.0, 0.01)
-            .listen()
-            .onChange(function (weight) {
-                setWeight(runAction, weight)
-            })
-        folder6
-            .add(settings, 'modify time scale', 0.0, 1.5, 0.01)
-            .onChange(modifyTimeScale.bind(this))
-
-        folder1.open()
-        folder2.open()
-        folder3.open()
-        folder4.open()
-        folder5.open()
-        folder6.open()
     }
 
     update(delta) {

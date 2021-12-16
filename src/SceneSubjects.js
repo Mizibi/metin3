@@ -6,6 +6,7 @@ import { Character } from './sceneSubjects/Character.js'
 import { Enemy } from './sceneSubjects/Enemy.js';
 import { Tree } from './sceneSubjects/Tree.js'
 import { Dragon } from './sceneSubjects/Dragon.js'
+import { Text } from './sceneSubjects/Text.js'
 
 function createSceneSubjects(scene) {
     const sceneSubjects = [
@@ -18,6 +19,7 @@ function createSceneSubjects(scene) {
         new Tree(scene, new THREE.Vector3(3, 0, 2)),
         new Tree(scene, new THREE.Vector3(-4, 0, 3)),
         new Tree(scene, new THREE.Vector3(-2, 0, 4)),
+        new Text(scene),
         // new Dragon(scene),
     ];
 
