@@ -5,7 +5,7 @@ const path = '../ressources/untitledmorecomplete.glb'
 
 const ACCELERATION_X = 1
 const ACCELERATION_Y = 0.25
-const ACCELERATION_Z = 1.5
+const ACCELERATION_Z = 3
 
 const DECCELERATION_X = -0.0005
 const DECCELERATION_Y = -0.0001
@@ -13,6 +13,8 @@ const DECCELERATION_Z = -5.0
 
 class Character {
     constructor(scene) {
+        this.raycaster = new THREE.Raycaster()
+        this.inAir = false
         this.scene = scene
 
         this.model = null
@@ -53,6 +55,7 @@ class Character {
             }
         })
 
+        this.model.position.y = 1
         this.model.scale.setScalar(0.5)
 
         this.mixer = new THREE.AnimationMixer(this.model)
@@ -76,11 +79,20 @@ class Character {
         //                     character   idk         idk         idk         idk         left shoulder arm        forearm    left hand
         // this.model.children[0].children[0].children[0].children[0].children[0].children[2].children[0].children[0].children[0].add(this.sword)
         // console.log(this.model.children[0].children[0].children[0].children[0].children[0].children[1].children[0].children[0].children[0])
-        
+
         if (window.DEBUG) {
             const characterFolder = window.GUI.addFolder('character')
             characterFolder.add(this.model, 'visible')
         }
+
+        const geometry = new THREE.ConeGeometry(0.1, 0.2, 12)
+        // geometry.translate(0, 50, 0)
+        const material = new THREE.MeshBasicMaterial({ color: 0xffff00 })
+        this.helper = new THREE.Mesh(geometry, material)
+        this.helper.rotateX(Math.PI)
+        this.helper.position.x = 5
+        this.helper.position.y = 1
+        this.scene.add(this.helper)
     }
 
     initAnimations(animations) {
@@ -337,7 +349,25 @@ class Character {
 
         this.model.quaternion.copy(_R)
 
-        const object = this.scene.getObjectByName( "enemy" );
+        // const object = this.scene.getObjectByName( "enemy" );
+
+        const dir = new THREE.Vector3(0, -1, 0)
+        // Check intersection
+        this.raycaster.set(this.model.position, dir)
+        const intersects = this.raycaster.intersectObjects(this.scene.children)
+        if (intersects.length > 0) {
+            // Maybe check if ground
+            if (intersects[0].distance < 0.1) {
+                this.inAir = false
+            }
+        }
+        // else this.inAir = true
+        for (let i = 0; i < intersects.length; i++) {
+            // intersects[i].object.material.color.set(0xff0000)
+        }
+        if (this.inAir) {
+            this.model.position.y -= 0.05
+        }
     }
 }
 
