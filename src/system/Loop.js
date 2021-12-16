@@ -23,7 +23,7 @@ class Loop {
         this.camera.update(delta)
 
         this.updatables.forEach(updatable => {
-            updatable.update(delta)
+            if (updatable.update) updatable.update(delta)
         })
 
         if (window.DEBUG) {

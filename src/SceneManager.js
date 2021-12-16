@@ -25,7 +25,7 @@ class SceneManager {
 
     this.loop = new Loop(this.camera, this.scene, this.renderer);
     for (const subject of this.sceneSubjects) {
-      await subject.init();
+      if (subject.init) await subject.init();
       this.loop.updatables.push(subject);
     }
   }
