@@ -3,7 +3,8 @@ const WORLD_WIDTH = FLOOR_SIZE / 4
 const WORLD_HEIGHT = FLOOR_SIZE / 4
 var seed = 10
 
-const HEIGHT_AMPLIFIER = 1
+const SIZE_AMPLIFIER = 5
+const HEIGHT_AMPLIFIER = 0.2
 
 const IMAGE_SRC = '../../ressources/simplex.png'
 
@@ -15,12 +16,6 @@ function random() {
 class Floor {
     constructor(scene) {
         this.scene = scene
-        var floorGeo = new THREE.PlaneGeometry(
-            FLOOR_SIZE,
-            FLOOR_SIZE,
-            WORLD_WIDTH,
-            WORLD_HEIGHT
-        )
 
         // const texture = new THREE.CanvasTexture(
         //     generateTexture(data, WORLD_WIDTH, WORLD_HEIGHT)
@@ -44,15 +39,6 @@ class Floor {
         // scene.add(floor)
 
         // this.model = floor
-
-        if (window.DEBUG) {
-            const floorFolder = window.GUI.addFolder('floor')
-            floorFolder.add(floor, 'visible')
-            floorFolder.add(floor.material, 'wireframe')
-            floorFolder.add(floor.position, 'x', -10, 10)
-            floorFolder.add(floor.position, 'y', -10, 10)
-            floorFolder.add(floor.position, 'z', -10, 10)
-        }
     }
 
     loadHeightMap() {
@@ -60,8 +46,8 @@ class Floor {
             var image = new Image()
             image.src = IMAGE_SRC
             image.onload = function () {
-                this.width = image.width
-                this.height = image.height
+                const width = image.width
+                const height = image.height
 
                 var canvas = document.createElement('canvas')
                 canvas.width = this.width
@@ -77,7 +63,7 @@ class Floor {
                     this.height
                 ).data
 
-                resolve({data, width: image.width, height: image.height})
+                resolve({data, width, height})
             }
         })
     }
@@ -87,32 +73,42 @@ class Floor {
         this.heightMap = heightMap.data
         this.width = heightMap.width
         this.height = heightMap.height
-        console.log(this.heightMap)
-        console.log(this.width)
 
         const floorGeo = new THREE.PlaneGeometry(
-            this.width,
-            this.height,
+            this.width * SIZE_AMPLIFIER,
+            this.height * SIZE_AMPLIFIER,
             this.width - 1,
             this.height - 1
         )
         var vertices = floorGeo.attributes.position.array
+        console.log(vertices)
         // apply height map to vertices of plane
         for (let i = 0, j = 2; i < this.heightMap.length; i += 4, j += 3) {
             vertices[j] = this.heightMap[i] * HEIGHT_AMPLIFIER
         }
 
+        console.log(this.heightMap)
+
         var material = new THREE.MeshPhongMaterial({
             // color: 0xffffff,
-            wireframe: true
+            // wireframe: true
         })
         this.model = new THREE.Mesh(floorGeo, material)
         this.model.rotation.x = -Math.PI / 2
-        this.model.position.y = -100
+        this.model.position.y = -30
         floorGeo.computeFaceNormals()
         floorGeo.computeVertexNormals()
 
         this.scene.add(this.model)
+
+        if (window.DEBUG) {
+            const floorFolder = window.GUI.addFolder('floor')
+            floorFolder.add(this.model, 'visible')
+            floorFolder.add(this.model.material, 'wireframe')
+            floorFolder.add(this.model.position, 'x', -10, 10)
+            floorFolder.add(this.model.position, 'y', -1000, 100)
+            floorFolder.add(this.model.position, 'z', -10, 10)
+        }
     }
 
     update() {}
