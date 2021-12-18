@@ -2,6 +2,7 @@ import { Spotlight } from './sceneSubjects/lights/Spotlight.js'
 import { Hemilight } from './sceneSubjects/lights/Hemilight.js';
 import { Dirlight } from './sceneSubjects/lights/Dirlight.js';
 import { Floor } from './sceneSubjects/Floor.js'
+import { Terrain } from './sceneSubjects/terrain/Terrain.js'
 import { Character } from './sceneSubjects/Character.js'
 import { Enemy } from './sceneSubjects/Enemy.js';
 import { Tree } from './sceneSubjects/Tree.js'
@@ -14,7 +15,8 @@ function createSceneSubjects(scene) {
         new Hemilight(scene),
         // new Spotlight(scene),
         new Dirlight(scene),
-        new Floor(scene),
+        // new Floor(scene),
+        new Terrain(scene),
         new Enemy(scene),
         new Tree(scene, new THREE.Vector3(3, 0, 2)),
         new Tree(scene, new THREE.Vector3(-4, 0, 3)),
